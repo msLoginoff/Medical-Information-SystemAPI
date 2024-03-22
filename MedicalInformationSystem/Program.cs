@@ -1,7 +1,9 @@
 using System.Text.Json.Serialization;
+using MedicalInformationSystem.Data;
 using MedicalInformationSystem.Jwt;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Json;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MvcJsonOptions = Microsoft.AspNetCore.Mvc.JsonOptions;
@@ -9,6 +11,9 @@ using MvcJsonOptions = Microsoft.AspNetCore.Mvc.JsonOptions;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddDbContext<AppDbContext>(options => 
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddScoped<IJwtService, JwtService>();
 
 //add services for correct display enum on swagger
 builder.Services.Configure<JsonOptions>(o => o.SerializerOptions.Converters.Add(new JsonStringEnumConverter()));
