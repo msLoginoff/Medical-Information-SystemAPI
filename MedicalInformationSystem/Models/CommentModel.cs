@@ -14,4 +14,5 @@ public class CommentModel : CommentCreateModel
     [Required]
     [MinLength(1)]
     public string Author { get; set; }
+    
 }

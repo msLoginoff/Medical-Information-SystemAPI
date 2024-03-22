@@ -5,6 +5,7 @@ namespace MedicalInformationSystem.Models;
 
 public class DoctorRegisterModel : DoctorEditModel
 {
+    [Required]
     [MinLength(1), PasswordPropertyText] //todo return to password 
     public PasswordPropertyTextAttribute Password { get; set; }
     [Required]
