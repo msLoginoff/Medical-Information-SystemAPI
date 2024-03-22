@@ -1,4 +1,4 @@
-/*using System.Security.Claims;
+using System.Security.Claims;
 using MedicalInformationSystem.Data;
 using MedicalInformationSystem.Jwt;
 
@@ -15,7 +15,7 @@ public class JwtService : IJwtService
 
     public ClaimsIdentity GetIdentity(string username, string password)
     {
-        var user = _context.UserEntities.FirstOrDefault(x => x.email == username && x.Password == password);
+        var user = _context.Doctor.FirstOrDefault(x => x.Email == username);
         
         if (user == null)
         {
@@ -34,4 +34,4 @@ public class JwtService : IJwtService
         return claimsIdentity;
     }
 
-}*/
+}
