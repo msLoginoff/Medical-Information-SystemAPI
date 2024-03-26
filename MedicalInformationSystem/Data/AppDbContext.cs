@@ -17,6 +17,7 @@ public class AppDbContext : DbContext
     public DbSet<InspectionEntity> Inspection { get; set; }
     public DbSet<PatientEntity> Patient { get; set; }
     public DbSet<SpecialityEntity> Speciality { get; set; }
+    public DbSet<PasswordEntity> Password { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -57,6 +58,11 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<SpecialityEntity>(options =>
         {
             options.ToTable("Speciality");
+        });
+
+        modelBuilder.Entity<PasswordEntity>(options =>
+        {
+            options.ToTable("Password");
         });
         
         base.OnModelCreating(modelBuilder);
