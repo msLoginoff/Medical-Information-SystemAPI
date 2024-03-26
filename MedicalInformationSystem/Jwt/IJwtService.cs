@@ -1,8 +1,8 @@
-using System.Security.Claims;
-
 namespace MedicalInformationSystem.Jwt;
 
 public interface IJwtService
 {
-    ClaimsIdentity GetIdentity(string username, string password);
+    public long? GetTokenSeriesByDoctorId(Guid doctorId);
+    public string? GenerateToken(Guid doctorId);
+    
 }

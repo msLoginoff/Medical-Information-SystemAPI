@@ -1,6 +1,7 @@
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using MedicalInformationSystem.Data;
-using MedicalInformationSystem.Jwt;
+using Microsoft.IdentityModel.Tokens;
 
 namespace MedicalInformationSystem.Jwt;
 
@@ -13,25 +14,38 @@ public class JwtService : IJwtService
         _context = context;
     }
 
-    public ClaimsIdentity GetIdentity(string username, string password)
+    public long? GetTokenSeriesByDoctorId(Guid doctorId)
     {
-        var user = _context.Doctor.FirstOrDefault(x => x.Email == username);
-        
-        if (user == null)
+       return _context.Password.FirstOrDefault(x => x.Doctor.Id == doctorId)?.TokenSeries;
+    }
+
+    public string? GenerateToken(Guid doctorId)
+    {
+        var tokenSeries = GetTokenSeriesByDoctorId(doctorId);
+
+        if (tokenSeries == null)
         {
             return null;
         }
-
-        // Claims описывают набор базовых данных для авторизованного пользователя
-        var claims = new List<Claim>
+        
+        var claims = new[]
         {
-            new (ClaimsIdentity.DefaultNameClaimType, user.Id.ToString())
+            new Claim(ClaimTypes.NameIdentifier, doctorId.ToString()),
+            new Claim(ClaimTypes.Version, tokenSeries.ToString())
         };
-
-        //Claims identity и будет являться полезной нагрузкой в JWT токене, которая будет проверяться стандартным атрибутом Authorize
-        var claimsIdentity =
-            new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
-        return claimsIdentity;
+        
+        var now = DateTime.UtcNow;
+        // создаем JWT-токен
+        var jwt = new JwtSecurityToken(
+            issuer: JwtConfigurations.Issuer,
+            audience: JwtConfigurations.Audience,
+            notBefore: now,
+            claims: claims,
+            expires: now.Add(TimeSpan.FromSeconds(JwtConfigurations.Lifetime)),
+            signingCredentials: new SigningCredentials(JwtConfigurations.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
+        
+        var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
+        return encodedJwt;
     }
 
 }
