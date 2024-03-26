@@ -27,32 +27,14 @@ public class DoctorController : ControllerBase
     [HttpPost("login")]
     public ActionResult Login([FromBody] LoginCredentialsModel loginCredentials)
     {
-        var identity = _jwtService.GetIdentity(loginCredentials.Email, loginCredentials.Password);
-        
-        if (identity == null)
-        {
-            return BadRequest(new { errorText = "Invalid username or password." });
-        }
-
-        var now = DateTime.UtcNow;
-        // создаем JWT-токен
-        var jwt = new JwtSecurityToken(
-            issuer: JwtConfigurations.Issuer,
-            audience: JwtConfigurations.Audience,
-            notBefore: now,
-            claims: identity.Claims,
-            expires: now.Add(TimeSpan.FromSeconds(JwtConfigurations.Lifetime)),
-            signingCredentials: new SigningCredentials(JwtConfigurations.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
-        var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
-
-        var response = new
+        /*var response = new
         {
             access_token = encodedJwt,
             username = identity.Name
         };
 
-        return new JsonResult(response);
-
+        return new JsonResult(response);*/
+        throw new NotImplementedException();
     }
     
     //[Authorize]//todo сделать функцию для авторизированного пользователя
