@@ -3,6 +3,7 @@ using MedicalInformationSystem.Data;
 using MedicalInformationSystem.Data.Entities;
 using MedicalInformationSystem.Requirements;
 using MedicalInformationSystem.Services;
+using MedicalInformationSystem.Services.ConsultationService;
 using MedicalInformationSystem.Services.DictionaryService;
 using MedicalInformationSystem.Services.DoctorService;
 using MedicalInformationSystem.Services.HashService;
@@ -41,7 +42,7 @@ builder.Services.AddAuthorization(options =>
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
-        //options.RequireHttpsMetadata = false; //todo взято с другого проекта
+        //options.RequireHttpsMetadata = false; 
         options.TokenValidationParameters = new TokenValidationParameters
         {
             // указывает, будет ли валидироваться издатель при валидации токена
@@ -116,6 +117,7 @@ builder.Services.AddScoped<IDictionaryService, DictionaryService>();
 builder.Services.AddScoped<IDoctorService, DoctorService>();
 builder.Services.AddScoped<IPatientService, PatientService>();
 builder.Services.AddScoped<IInspectionService, InspectionService>();
+builder.Services.AddScoped<IConsultationService, ConsultationService>();
 builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IAuthorizationHandler, TokenHandler>();
 
@@ -142,6 +144,19 @@ using (var scope = app.Services.CreateScope())
 {
      var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
      db.Database.Migrate();
+
+     if (!db.Speciality.Any())
+     {
+         var specialityJson = File.ReadAllText("specialities.json");
+         var specialities = JsonSerializer.Deserialize<List<SpecialityEntity>>(specialityJson);
+         foreach (var speciality in specialities)
+         {
+             speciality.Id = Guid.NewGuid();
+             speciality.CreateTime = DateTime.Now.ToUniversalTime();
+             db.Speciality.Add(speciality);
+         }
+         db.SaveChanges();
+     }
      
      if (!db.IcdRoots.Any())
      {
@@ -151,10 +166,6 @@ using (var scope = app.Services.CreateScope())
          foreach (var icdRoot in icdRoots)
          {
              icdRoot.NewId = Guid.NewGuid();
-
-             // Присваиваем старый числовой Id новому свойству OldId
-             //product.OldId = /* Значение старого числового Id */;
-
              db.IcdRoots.Add(icdRoot);
          }
          db.SaveChanges();
@@ -194,9 +205,6 @@ using (var scope = app.Services.CreateScope())
                  < 14960 => db.IcdRoots.First(x => x.ID == 14061),
                  _ => db.IcdRoots.First(x => x.ID == 14960)
              };
-             // Присваиваем старый числовой Id новому свойству OldId
-             //product.OldId = /* Значение старого числового Id */;
-
              db.Icd.Add(icdItem);
          }
          db.SaveChanges();

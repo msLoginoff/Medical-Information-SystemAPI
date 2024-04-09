@@ -65,7 +65,7 @@ public class DictionaryController : ControllerBase
                 StatusCode = (int)HttpStatusCode.Forbidden
             };
         }
-        catch (ServerError e)
+        catch (Exception e)
         {
             return new JsonResult(new Response
             {
@@ -121,7 +121,7 @@ public class DictionaryController : ControllerBase
                 StatusCode = (int)HttpStatusCode.Forbidden
             };
         }
-        catch (ServerError e)
+        catch (Exception e)
         {
             return new JsonResult(new Response
             {
@@ -175,7 +175,7 @@ public class DictionaryController : ControllerBase
                 StatusCode = (int)HttpStatusCode.Forbidden
             };
         }
-        catch (ServerError e)
+        catch (Exception e)
         {
             return new JsonResult(new Response
             {

@@ -59,7 +59,7 @@ public class ReportController : ControllerBase
                    StatusCode = (int)HttpStatusCode.Forbidden
                };
            }
-           catch (ServerError e)
+           catch (Exception e)
            {
                return new JsonResult(new Response
                {

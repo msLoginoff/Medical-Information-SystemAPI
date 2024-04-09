@@ -63,7 +63,6 @@ public class DictionaryService : IDictionaryService
         };
 
         return icdResponse;
-        throw new NotImplementedException();
     }
 
     public IEnumerable<Icd10RecordModel> GetIcdRoots()
@@ -78,7 +77,5 @@ public class DictionaryService : IDictionaryService
             Code = x.MKB_CODE,
             Name = x.MKB_NAME
         }).AsEnumerable();
-        
-        throw new NotImplementedException();
     }
 }

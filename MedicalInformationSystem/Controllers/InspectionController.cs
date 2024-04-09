@@ -31,7 +31,8 @@ public class InspectionController : ControllerBase
     {
         try
         {
-            return Ok(_inspectionService.GetInspectionInformation(id)); //todo connect inspectionService
+            //throw new Exception();
+            return Ok(_inspectionService.GetInspectionInformation(id));
         }
         catch (BadRequest e)
         {
@@ -66,7 +67,7 @@ public class InspectionController : ControllerBase
                 StatusCode = (int)HttpStatusCode.Forbidden
             };
         }
-        catch (ServerError e)
+        catch (Exception e)
         {
             return new JsonResult(new Response
             {
@@ -91,7 +92,7 @@ public class InspectionController : ControllerBase
         try
         {
             var doctorId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-            return Ok(_inspectionService.EditInspectionInformation(id, doctorId, inspectionEditModel)); //todo connect inspectionService
+            return Ok(_inspectionService.EditInspectionInformation(id, doctorId, inspectionEditModel));
         }
         catch (BadRequest e)
         {
@@ -126,7 +127,7 @@ public class InspectionController : ControllerBase
                 StatusCode = (int)HttpStatusCode.Forbidden
             };
         }
-        catch (ServerError e)
+        catch (Exception e)
         {
             return new JsonResult(new Response
             {
@@ -148,7 +149,7 @@ public class InspectionController : ControllerBase
     {
         try
         {
-            return Ok(_inspectionService.GetInspectionChain(id)); //todo connect inspectionService
+            return Ok(_inspectionService.GetInspectionChain(id)); 
         }
         catch (BadRequest e)
         {
@@ -183,10 +184,16 @@ public class InspectionController : ControllerBase
                 StatusCode = (int)HttpStatusCode.Forbidden
             };
         }
-        catch (Exception ex)
+        catch (Exception e)
         {
-            var errorResponse = new ServerError("");
-            return StatusCode(StatusCodes.Status500InternalServerError, errorResponse);
+            return new JsonResult(new Response
+            {
+                Status = "Error",
+                Message = e.Message
+            })
+            {
+                StatusCode = (int)HttpStatusCode.InternalServerError
+            };
         }
     }
 }

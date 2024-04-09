@@ -312,8 +312,6 @@ public class PatientService : IPatientService
 
         _context.Add(newInspection);
         _context.SaveChanges();
-        
-        //todo add consultations
 
         return newInspection.Id;
     }

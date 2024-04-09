@@ -309,6 +309,5 @@ public class InspectionService : IInspectionService
         });
 
         return responseInspections;
-        throw new NotImplementedException();
     }
 }

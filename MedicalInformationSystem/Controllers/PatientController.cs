@@ -17,7 +17,7 @@ namespace MedicalInformationSystem.Controllers;
 [Route("api/patient")]
 public class PatientController : ControllerBase
 {
-    private readonly IPatientService _patientService; //todo change on PatientService
+    private readonly IPatientService _patientService;
     private readonly IJwtService _jwtService;
 
     public PatientController(IPatientService patientService, IJwtService jwtService)
@@ -34,7 +34,7 @@ public class PatientController : ControllerBase
         try
         {
             
-            return Ok(_patientService.CreatePatient(patientCreateModel)); //todo connect patient service creating
+            return Ok(_patientService.CreatePatient(patientCreateModel));
         }
         catch (BadRequest e)
         {
@@ -69,7 +69,7 @@ public class PatientController : ControllerBase
                 StatusCode = (int)HttpStatusCode.Forbidden
             };
         }
-        catch (ServerError e)
+        catch (Exception e)
         {
             return new JsonResult(new Response
             {
@@ -96,7 +96,7 @@ public class PatientController : ControllerBase
         try
         {
             var doctorId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-            return Ok(_patientService.GetPatients(doctorId, name,conclusions, sorting, scheduledVisits, onlyMine, page, size)); //todo add service
+            return Ok(_patientService.GetPatients(doctorId, name,conclusions, sorting, scheduledVisits, onlyMine, page, size)); 
         }
         catch (BadRequest e)
         {
@@ -131,7 +131,7 @@ public class PatientController : ControllerBase
                 StatusCode = (int)HttpStatusCode.Forbidden
             };
         }
-        catch (ServerError e)
+        catch (Exception e)
         {
             return new JsonResult(new Response
             {
@@ -153,7 +153,7 @@ public class PatientController : ControllerBase
         try
         {
             var doctorId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-            return Ok(_patientService.CreateInspection(doctorId, patientId, inspectionCreateModel)); //todo connect patient service creating inspection, return guid
+            return Ok(_patientService.CreateInspection(doctorId, patientId, inspectionCreateModel)); 
         }
         catch (BadRequest e)
         {
@@ -188,7 +188,7 @@ public class PatientController : ControllerBase
                 StatusCode = (int)HttpStatusCode.Forbidden
             };
         }
-        catch (ServerError e)
+        catch (Exception e)
         {
             return new JsonResult(new Response
             {
@@ -215,7 +215,7 @@ public class PatientController : ControllerBase
         try
         {
             var doctorId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-            return Ok(_patientService.GetPatientInspections(doctorId, patientId, icdRoots, grouped, page, size)); //todo connect patient service creating inspection, return Insp PagedListModel
+            return Ok(_patientService.GetPatientInspections(doctorId, patientId, icdRoots, grouped, page, size)); 
         }
         catch (BadRequest e)
         {
@@ -250,7 +250,7 @@ public class PatientController : ControllerBase
                 StatusCode = (int)HttpStatusCode.Forbidden
             };
         }
-        catch (ServerError e)
+        catch (Exception e)
         {
             return new JsonResult(new Response
             {
@@ -271,7 +271,7 @@ public class PatientController : ControllerBase
     {
         try
         {
-            return Ok(_patientService.GetPatientCard(patientId)); //todo connect patient service, return PatientModel
+            return Ok(_patientService.GetPatientCard(patientId)); 
         }
         catch (BadRequest e)
         {
@@ -306,7 +306,7 @@ public class PatientController : ControllerBase
                 StatusCode = (int)HttpStatusCode.Forbidden
             };
         }
-        catch (ServerError e)
+        catch (Exception e)
         {
             return new JsonResult(new Response
             {
@@ -322,14 +322,14 @@ public class PatientController : ControllerBase
     [Authorize(Policy = "TokenPolicy")]
     [HttpGet("{patientId:guid}/inspections/search")]
     [SwaggerOperation(Summary = "Search for patient medical inspections without child inspections")]
-    public ActionResult<IEnumerable<InspectionShortModel>> GetPatientRootInspections( //todo надо уточнить, не факт что только рутовые
+    public ActionResult<IEnumerable<InspectionShortModel>> GetPatientRootInspections(
         Guid patientId,
         [FromQuery]
         string? request)
     {
         try
         {
-            return Ok(_patientService.GetInspectionsWithoutChild(patientId, request)); //todo connect patient service, return Insp Short Model
+            return Ok(_patientService.GetInspectionsWithoutChild(patientId, request)); 
         }
         catch (BadRequest e)
         {
@@ -364,7 +364,7 @@ public class PatientController : ControllerBase
                 StatusCode = (int)HttpStatusCode.Forbidden
             };
         }
-        catch (ServerError e)
+        catch (Exception e)
         {
             return new JsonResult(new Response
             {

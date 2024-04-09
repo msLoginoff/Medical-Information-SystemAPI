@@ -1,6 +1,9 @@
 using System.Net;
+using System.Security.Claims;
+using MedicalInformationSystem.Data;
 using MedicalInformationSystem.Exceptions;
 using MedicalInformationSystem.Models;
+using MedicalInformationSystem.Services.ConsultationService;
 using MedicalInformationSystem.Services.Jwt;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,10 +16,10 @@ namespace MedicalInformationSystem.Controllers;
 public class ConsultationController : ControllerBase
 {
     private readonly IJwtService _jwtService;
-
-    public ConsultationController(/*IConsultationService consultationService,*/ IJwtService jwtService)
+    private readonly IConsultationService _consultationService;
+    public ConsultationController(IConsultationService consultationService, IJwtService jwtService)
     {
-        //_consultationService = consultationService;
+        _consultationService = consultationService;
         _jwtService = jwtService;
     }
 
@@ -24,7 +27,7 @@ public class ConsultationController : ControllerBase
     [SwaggerOperation(Summary = "Get a list of medical inspections for consultation")]
     [HttpGet("")]
     public ActionResult<InspectionPagedListModel> GetInspectionsForConsultation(
-        [FromQuery] Guid[]? icdRoots,
+        [FromQuery] Guid[] icdRoots,
         bool grouped = false,
         int page = 1,
         int size = 5
@@ -32,7 +35,8 @@ public class ConsultationController : ControllerBase
     {
         try
         {
-            return Ok(); //todo connect consultationService
+            var doctorId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            return Ok(_consultationService.GetInspectionsWithConsultations(doctorId, grouped, icdRoots!, page, size));
         }
         catch (BadRequest e)
         {
@@ -67,7 +71,7 @@ public class ConsultationController : ControllerBase
                 StatusCode = (int)HttpStatusCode.Forbidden
             };
         }
-        catch (ServerError e)
+        catch (Exception e)
         {
             return new JsonResult(new Response
             {
@@ -87,7 +91,7 @@ public class ConsultationController : ControllerBase
     {
         try
         {
-            return Ok(); //todo connect consultationService
+            return Ok(_consultationService.GetConsultation(id));
         }
         catch (BadRequest e)
         {
@@ -122,7 +126,7 @@ public class ConsultationController : ControllerBase
                 StatusCode = (int)HttpStatusCode.Forbidden
             };
         }
-        catch (ServerError e)
+        catch (Exception e)
         {
             return new JsonResult(new Response
             {
@@ -145,7 +149,8 @@ public class ConsultationController : ControllerBase
     {
         try
         {
-            return Ok(); //todo connect consultationService
+            var doctorId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            return Ok(_consultationService.AddCommentToConsultation(doctorId, id, commentCreateModel));
         }
         catch (BadRequest e)
         {
@@ -180,7 +185,7 @@ public class ConsultationController : ControllerBase
                 StatusCode = (int)HttpStatusCode.Forbidden
             };
         }
-        catch (ServerError e)
+        catch (Exception e)
         {
             return new JsonResult(new Response
             {
@@ -203,7 +208,9 @@ public class ConsultationController : ControllerBase
     {
         try
         {
-            return Ok(); //todo connect consultationService
+            var doctorId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            _consultationService.EditComment(doctorId, id, inspectionCommentCreateModel);
+            return Ok();
         }
         catch (BadRequest e)
         {
@@ -238,7 +245,7 @@ public class ConsultationController : ControllerBase
                 StatusCode = (int)HttpStatusCode.Forbidden
             };
         }
-        catch (ServerError e)
+        catch (Exception e)
         {
             return new JsonResult(new Response
             {

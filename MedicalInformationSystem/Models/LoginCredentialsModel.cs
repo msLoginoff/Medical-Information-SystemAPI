@@ -9,6 +9,6 @@ public class LoginCredentialsModel
     [MinLength(1), EmailAddress]
     public string Email { get; set; }
     [Required]
-    [MinLength(1), PasswordPropertyText] //todo return to password 
+    [MinLength(1), PasswordPropertyText]
     public string Password { get; set; }
 }

@@ -57,6 +57,7 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<PatientEntity>(options =>
         {
             options.ToTable("Patient");
+            options.HasIndex(x => x.Name);
         });
         
         modelBuilder.Entity<SpecialityEntity>(options =>

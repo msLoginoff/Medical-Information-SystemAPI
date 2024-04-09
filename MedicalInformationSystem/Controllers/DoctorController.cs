@@ -27,7 +27,7 @@ public class DoctorController : ControllerBase
 
     [HttpPost("register")]
     [SwaggerOperation(Summary = "Register new user")]
-    public ActionResult Register([FromBody] DoctorRegisterModel doctorRegisterModel) // todo токен возвращаемый тип
+    public ActionResult Register([FromBody] DoctorRegisterModel doctorRegisterModel) 
     {
         try
         {
@@ -69,7 +69,7 @@ public class DoctorController : ControllerBase
                 StatusCode = (int)HttpStatusCode.Forbidden
             };
         }
-        catch (ServerError e)
+        catch (Exception e)
         {
             return new JsonResult(new Response
             {
@@ -126,7 +126,7 @@ public class DoctorController : ControllerBase
                 StatusCode = (int)HttpStatusCode.Forbidden
             };
         }
-        catch (ServerError e)
+        catch (Exception e)
         {
             return new JsonResult(new Response
             {
@@ -142,7 +142,7 @@ public class DoctorController : ControllerBase
     [Authorize(Policy = "TokenPolicy")]
     [HttpPost("logout")]
     [SwaggerOperation(Summary = "Log out system user")]
-    public ActionResult Logout() //todo сменить тип
+    public ActionResult Logout()
     {
         try
         {
@@ -187,7 +187,7 @@ public class DoctorController : ControllerBase
                 StatusCode = (int)HttpStatusCode.Forbidden
             };
         }
-        catch (ServerError e)
+        catch (Exception e)
         {
             return new JsonResult(new Response
             {
@@ -244,7 +244,7 @@ public class DoctorController : ControllerBase
                 StatusCode = (int)HttpStatusCode.Forbidden
             };
         }
-        catch (ServerError e)
+        catch (Exception e)
         {
             return new JsonResult(new Response
             {
@@ -301,7 +301,7 @@ public class DoctorController : ControllerBase
                 StatusCode = (int)HttpStatusCode.Forbidden
             };
         }
-        catch (ServerError e)
+        catch (Exception e)
         {
             return new JsonResult(new Response
             {

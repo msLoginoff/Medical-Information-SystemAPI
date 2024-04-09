@@ -42,7 +42,7 @@ public class DoctorService : IDoctorService
         var newDoctor = new DoctorEntity
         {
             Id = doctorId,
-            CreateTime = DateTime.Now,
+            CreateTime = DateTime.Now.ToUniversalTime(),
             Email = doctorRegisterModel.Email,
             Name = doctorRegisterModel.Name,
             BirthDateTime = doctorRegisterModel.BirthDateTime,
