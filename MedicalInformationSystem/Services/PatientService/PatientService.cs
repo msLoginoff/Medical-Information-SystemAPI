@@ -80,32 +80,9 @@ public class PatientService : IPatientService
             PatientSortingEnum.CreateAsc => patients.OrderBy(x => x.CreateTime),
             PatientSortingEnum.CreateDesc => patients.OrderByDescending(x => x.CreateTime),
             PatientSortingEnum.InspectionAsc => patients.OrderBy(x => x.Inspection.OrderBy(y => y.Date).First()), 
-            PatientSortingEnum.InspectionDesc => patients, //todo add sorting 
+            PatientSortingEnum.InspectionDesc => patients.OrderByDescending(x => x.Inspection.OrderBy(y => y.Date).First()), //todo add sorting 
             _ => throw new ArgumentOutOfRangeException(nameof(sorting), sorting, null)
         };
-        //
-        // switch (sorting) 
-        // {
-        //     case PatientSortingEnum.NameAsc:
-        //         patients = patients.OrderBy(x => x.Name);
-        //         break;
-        //     case PatientSortingEnum.NameDesc:
-        //         patients = patients.OrderByDescending(x => x.Name);
-        //         break;
-        //     case PatientSortingEnum.CreateAsc:
-        //         patients = patients.OrderBy(x => x.CreateTime);
-        //         break;
-        //     case PatientSortingEnum.CreateDesc:
-        //         patients = patients.OrderByDescending(x => x.CreateTime);
-        //         break;
-        //     case PatientSortingEnum.InspectionAsc:
-        //         patients = patients.OrderBy(x => x.Inspection.OrderBy(y => y.Date).First());
-        //         break;
-        //     case PatientSortingEnum.InspectionDesc:
-        //         break;
-        //     default:
-        //         throw new ArgumentOutOfRangeException(nameof(sorting), sorting, null);
-        // }
 
         var pagination = new PageInfoModel(size, patients.Count(), page);
 
@@ -281,6 +258,44 @@ public class PatientService : IPatientService
                 Type = diagnosis.Type
             };
             _context.Add(newDiagnosis);
+        }
+        
+        var consultations = inspectionCreateModel.Consultations.ToList();
+            
+        if (consultations.FirstOrDefault() != null)
+        {
+            foreach (var consultation in consultations)
+            {
+                if (!_context.Speciality.Any(x => x.Id == consultation.SpecialityId))
+                {
+                    throw new BadRequest("Speciality not found");
+                }
+
+                var speciality = _context.Speciality.First(x => x.Id == consultation.SpecialityId);
+
+                var newConsultation = new ConsultationEntity
+                {
+                    Speciality = speciality,
+                    CreateTime = DateTime.Now.ToUniversalTime(),
+                    Inspection = newInspection,
+                    Id = Guid.NewGuid(),
+                };
+                _context.Add(newConsultation);
+
+                var newComment = new CommentEntity
+                {
+                    Author = newInspection.Doctor,
+                    Consultation = newConsultation,
+                    Id = Guid.NewGuid(),
+                    CreateTime = DateTime.Now.ToUniversalTime(),
+                    ModifiedDate = null,
+                    Content = consultation.Comment.Content,
+                    Parent = null,
+                    NestedComment = null
+                };
+
+                _context.Add(newComment);
+            }
         }
 
         _context.Add(newInspection);
