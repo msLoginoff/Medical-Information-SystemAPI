@@ -22,6 +22,6 @@ public class InspectionCreateModel
     public Guid? PreviousInspectionId { get; set; }
     [Required]
     [MinLength(1)]
-    public DiagnosisCreateModel Diagnoses { get; set; }
-    public ConsultationCreateModel? Consultations { get; set; }
+    public IEnumerable<DiagnosisCreateModel> Diagnoses { get; set; }
+    public IEnumerable<ConsultationCreateModel> Consultations { get; set; }
 }

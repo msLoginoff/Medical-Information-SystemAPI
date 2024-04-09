@@ -25,6 +25,6 @@ public class InspectionModel
     public DoctorModel Doctor { get; set; }
     [Required]
     [MinLength(1)]
-    public DiagnosisModel? Diagnoses { get; set; }
-    public InspectionConsultationModel? Consultations { get; set; }
+    public IEnumerable<DiagnosisModel> Diagnoses { get; set; }
+    public IEnumerable<InspectionConsultationModel>? Consultations { get; set; }
 }

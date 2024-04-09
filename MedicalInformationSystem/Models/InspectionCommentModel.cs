@@ -11,5 +11,5 @@ public class InspectionCommentModel
     public Guid? ParentId { get; set; }
     public string? Content { get; set; }
     public DoctorModel Author { get; set; }
-    public DateTime ModifyTime { get; set; }
+    public DateTime? ModifyTime { get; set; }
 }

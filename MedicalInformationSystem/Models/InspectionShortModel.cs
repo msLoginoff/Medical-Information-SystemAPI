@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using MedicalInformationSystem.Data.Entities;
 
 namespace MedicalInformationSystem.Models;
 

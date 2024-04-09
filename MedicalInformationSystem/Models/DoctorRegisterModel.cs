@@ -7,7 +7,7 @@ public class DoctorRegisterModel : DoctorEditModel
 {
     [Required]
     [MinLength(1), PasswordPropertyText] //todo return to password 
-    public PasswordPropertyTextAttribute Password { get; set; }
+    public string Password { get; set; }
     [Required]
     public Guid Speciality { get; set; }
 }
