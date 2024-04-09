@@ -33,10 +33,49 @@ public class InspectionController : ControllerBase
         {
             return Ok(_inspectionService.GetInspectionInformation(id)); //todo connect inspectionService
         }
-        catch (Exception e)
+        catch (BadRequest e)
         {
-            Console.WriteLine(e);
-            throw;
+            return new JsonResult(new Response
+            {
+                Status = "Error",
+                Message = e.Message
+            })
+            {
+                StatusCode = (int)HttpStatusCode.BadRequest
+            };
+        }
+        catch (NotFoundException e)
+        {
+            return new JsonResult(new Response
+            {
+                Status = "Error",
+                Message = e.Message
+            })
+            {
+                StatusCode = (int)HttpStatusCode.NotFound
+            };
+        }
+        catch (Forbidden e)
+        {
+            return new JsonResult(new Response
+            {
+                Status = "Error",
+                Message = e.Message
+            })
+            {
+                StatusCode = (int)HttpStatusCode.Forbidden
+            };
+        }
+        catch (ServerError e)
+        {
+            return new JsonResult(new Response
+            {
+                Status = "Error",
+                Message = e.Message
+            })
+            {
+                StatusCode = (int)HttpStatusCode.InternalServerError
+            };
         }
     }
     
@@ -76,9 +115,32 @@ public class InspectionController : ControllerBase
                 StatusCode = (int)HttpStatusCode.NotFound
             };
         }
+        catch (Forbidden e)
+        {
+            return new JsonResult(new Response
+            {
+                Status = "Error",
+                Message = e.Message
+            })
+            {
+                StatusCode = (int)HttpStatusCode.Forbidden
+            };
+        }
+        catch (ServerError e)
+        {
+            return new JsonResult(new Response
+            {
+                Status = "Error",
+                Message = e.Message
+            })
+            {
+                StatusCode = (int)HttpStatusCode.InternalServerError
+            };
+        }
     }
     
     [Authorize(Policy = "TokenPolicy")]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ServerError))]
     [SwaggerOperation(Summary = "Get medical inspection chain for root chain")]
     [HttpGet("{id:guid}/chain")]
     public ActionResult<InspectionPreviewModel> GetInspectionChain(
@@ -109,6 +171,22 @@ public class InspectionController : ControllerBase
             {
                 StatusCode = (int)HttpStatusCode.NotFound
             };
+        }
+        catch (Forbidden e)
+        {
+            return new JsonResult(new Response
+            {
+                Status = "Error",
+                Message = e.Message
+            })
+            {
+                StatusCode = (int)HttpStatusCode.Forbidden
+            };
+        }
+        catch (Exception ex)
+        {
+            var errorResponse = new ServerError("");
+            return StatusCode(StatusCodes.Status500InternalServerError, errorResponse);
         }
     }
 }

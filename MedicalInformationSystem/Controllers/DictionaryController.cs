@@ -64,7 +64,7 @@ public class DictionaryController : ControllerBase
     {
         try
         {
-            return Ok(_dictionaryService.GetSpecialities(request, page, size));
+            return Ok(_dictionaryService.GetIcd(request, page, size));
         }
         catch (BadRequest e)
         {
@@ -92,11 +92,11 @@ public class DictionaryController : ControllerBase
     
     [HttpGet("icd10/roots")]
     [SwaggerOperation(Summary = "Get root ICD-10 elements")]
-    public ActionResult<Icd10RecordModel> GetIcdRoots()
+    public ActionResult<IEnumerable<Icd10RecordModel>> GetIcdRoots()
     {
         try
         {
-            return Ok();
+            return Ok(_dictionaryService.GetIcdRoots());
         }
         catch (BadRequest e)
         {
@@ -118,6 +118,28 @@ public class DictionaryController : ControllerBase
             })
             {
                 StatusCode = (int)HttpStatusCode.NotFound
+            };
+        }
+        catch (Forbidden e)
+        {
+            return new JsonResult(new Response
+            {
+                Status = "Error",
+                Message = e.Message
+            })
+            {
+                StatusCode = (int)HttpStatusCode.Forbidden
+            };
+        }
+        catch (ServerError e)
+        {
+            return new JsonResult(new Response
+            {
+                Status = "Error",
+                Message = e.Message
+            })
+            {
+                StatusCode = (int)HttpStatusCode.InternalServerError
             };
         }
     }

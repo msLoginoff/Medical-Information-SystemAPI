@@ -280,12 +280,6 @@ public class InspectionService : IInspectionService
                 .Include(inspectionEntity => inspectionEntity.Doctor)
                 .Include(inspectionEntity => inspectionEntity.Patient)
                 .FirstOrDefault(x => x.PreviousInspection == foundInspection);
-            /*response = _context.Inspection
-                .Where(x => x == foundInspection)
-                .Select(i => new InspectionPreviewModel
-            {
-
-            }).AsEnumerable();*/
         }
 
         var responseInspections = response.Select(i => new InspectionPreviewModel
