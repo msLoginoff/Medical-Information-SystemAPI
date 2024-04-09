@@ -1,9 +1,9 @@
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 
-namespace MedicalInformationSystem.Jwt;
+namespace MedicalInformationSystem.Services.Jwt;
 
-public class JwtConfigurations
+public abstract class JwtConfigurations
 {
     public const string Issuer = "JwtTestIssuer"; // издатель токена
     public const string Audience = "JwtTestClient"; // потребитель токена

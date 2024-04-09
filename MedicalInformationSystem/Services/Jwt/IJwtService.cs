@@ -1,4 +1,4 @@
-namespace MedicalInformationSystem.Jwt;
+namespace MedicalInformationSystem.Services.Jwt;
 
 public interface IJwtService
 {

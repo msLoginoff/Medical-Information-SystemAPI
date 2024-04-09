@@ -3,7 +3,7 @@ using System.Security.Claims;
 using MedicalInformationSystem.Data;
 using Microsoft.IdentityModel.Tokens;
 
-namespace MedicalInformationSystem.Jwt;
+namespace MedicalInformationSystem.Services.Jwt;
 
 public class JwtService : IJwtService
 {

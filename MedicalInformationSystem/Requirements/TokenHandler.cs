@@ -1,14 +1,14 @@
 using System.Security.Claims;
-using MedicalInformationSystem.Jwt;
+using MedicalInformationSystem.Services.Jwt;
 using Microsoft.AspNetCore.Authorization;
 
 namespace MedicalInformationSystem.Requirements;
 
 public class TokenHandler : AuthorizationHandler<TokenRequirement>
 {
-    private readonly JwtService _jwtService;
+    private readonly IJwtService _jwtService;
 
-    public TokenHandler(JwtService jwtService)
+    public TokenHandler(IJwtService jwtService)
     {
         _jwtService = jwtService;
     }
