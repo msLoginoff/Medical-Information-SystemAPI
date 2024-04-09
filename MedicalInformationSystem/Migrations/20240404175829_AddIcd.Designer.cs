@@ -3,6 +3,7 @@ using System;
 using MedicalInformationSystem.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MedicalInformationSystem.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240404175829_AddIcd")]
+    partial class AddIcd
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -168,9 +170,8 @@ namespace MedicalInformationSystem.Migrations
                     b.Property<int>("ID")
                         .HasColumnType("integer");
 
-                    b.Property<string>("ID_PARENT")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("ID_PARENT")
+                        .HasColumnType("integer");
 
                     b.Property<Guid>("IcdRootNewId")
                         .HasColumnType("uuid");

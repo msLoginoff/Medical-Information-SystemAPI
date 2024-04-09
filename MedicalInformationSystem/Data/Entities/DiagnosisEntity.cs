@@ -16,8 +16,8 @@ public class DiagnosisEntity
     public string? Description { get; set; }
     [Required]
     public DiagnosisTypeEnum Type { get; set; }
-    /*[Required]
-    public Guid IcdDiagnosisId { get; set; }*/
+    [Required]
+    public IcdEntity IcdDiagnosis { get; set; }
     
     public InspectionEntity Inspection { get; set; }
 }

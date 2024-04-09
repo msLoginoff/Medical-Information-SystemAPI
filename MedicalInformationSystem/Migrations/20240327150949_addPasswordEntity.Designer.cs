@@ -3,6 +3,7 @@ using System;
 using MedicalInformationSystem.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MedicalInformationSystem.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240327150949_addPasswordEntity")]
+    partial class addPasswordEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -98,9 +100,6 @@ namespace MedicalInformationSystem.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
-                    b.Property<Guid>("IcdDiagnosisNewId")
-                        .HasColumnType("uuid");
-
                     b.Property<Guid>("InspectionId")
                         .HasColumnType("uuid");
 
@@ -112,8 +111,6 @@ namespace MedicalInformationSystem.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("IcdDiagnosisNewId");
 
                     b.HasIndex("InspectionId");
 
@@ -151,77 +148,9 @@ namespace MedicalInformationSystem.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Email")
-                        .IsUnique();
-
                     b.HasIndex("SpecialityId");
 
                     b.ToTable("Doctor", (string)null);
-                });
-
-            modelBuilder.Entity("MedicalInformationSystem.Data.Entities.IcdEntity", b =>
-                {
-                    b.Property<Guid>("NewId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("ID")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("ID_PARENT")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("IcdRootNewId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("MKB_CODE")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("MKB_NAME")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("NewId");
-
-                    b.HasIndex("IcdRootNewId");
-
-                    b.HasIndex("MKB_CODE");
-
-                    b.HasIndex("MKB_NAME");
-
-                    b.HasIndex("NewId");
-
-                    b.ToTable("Icd");
-                });
-
-            modelBuilder.Entity("MedicalInformationSystem.Data.Entities.IcdRootsEntity", b =>
-                {
-                    b.Property<Guid>("NewId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("ID")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("MKB_CODE")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("MKB_NAME")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("NewId");
-
-                    b.HasIndex("MKB_CODE");
-
-                    b.HasIndex("MKB_NAME");
-
-                    b.HasIndex("NewId");
-
-                    b.ToTable("IcdRoots");
                 });
 
             modelBuilder.Entity("MedicalInformationSystem.Data.Entities.InspectionEntity", b =>
@@ -290,11 +219,8 @@ namespace MedicalInformationSystem.Migrations
 
             modelBuilder.Entity("MedicalInformationSystem.Data.Entities.PasswordEntity", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
                     b.Property<Guid>("DoctorId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("HashedPassword")
@@ -308,9 +234,7 @@ namespace MedicalInformationSystem.Migrations
                     b.Property<long>("TokenSeries")
                         .HasColumnType("bigint");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("DoctorId");
+                    b.HasKey("DoctorId");
 
                     b.ToTable("Password", (string)null);
                 });
@@ -353,8 +277,6 @@ namespace MedicalInformationSystem.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Name");
 
                     b.ToTable("Speciality", (string)null);
                 });
@@ -405,19 +327,11 @@ namespace MedicalInformationSystem.Migrations
 
             modelBuilder.Entity("MedicalInformationSystem.Data.Entities.DiagnosisEntity", b =>
                 {
-                    b.HasOne("MedicalInformationSystem.Data.Entities.IcdEntity", "IcdDiagnosis")
-                        .WithMany()
-                        .HasForeignKey("IcdDiagnosisNewId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("MedicalInformationSystem.Data.Entities.InspectionEntity", "Inspection")
                         .WithMany("Diagnoses")
                         .HasForeignKey("InspectionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("IcdDiagnosis");
 
                     b.Navigation("Inspection");
                 });
@@ -431,17 +345,6 @@ namespace MedicalInformationSystem.Migrations
                         .IsRequired();
 
                     b.Navigation("Speciality");
-                });
-
-            modelBuilder.Entity("MedicalInformationSystem.Data.Entities.IcdEntity", b =>
-                {
-                    b.HasOne("MedicalInformationSystem.Data.Entities.IcdRootsEntity", "IcdRoot")
-                        .WithMany()
-                        .HasForeignKey("IcdRootNewId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("IcdRoot");
                 });
 
             modelBuilder.Entity("MedicalInformationSystem.Data.Entities.InspectionEntity", b =>
@@ -473,17 +376,6 @@ namespace MedicalInformationSystem.Migrations
                     b.Navigation("Patient");
 
                     b.Navigation("PreviousInspection");
-                });
-
-            modelBuilder.Entity("MedicalInformationSystem.Data.Entities.PasswordEntity", b =>
-                {
-                    b.HasOne("MedicalInformationSystem.Data.Entities.DoctorEntity", "Doctor")
-                        .WithMany()
-                        .HasForeignKey("DoctorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Doctor");
                 });
 
             modelBuilder.Entity("MedicalInformationSystem.Data.Entities.CommentEntity", b =>

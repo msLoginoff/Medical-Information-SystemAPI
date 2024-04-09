@@ -18,6 +18,9 @@ public class AppDbContext : DbContext
     public DbSet<PatientEntity> Patient { get; set; }
     public DbSet<SpecialityEntity> Speciality { get; set; }
     public DbSet<PasswordEntity> Password { get; set; }
+    
+    public DbSet<IcdRootsEntity> IcdRoots { get; set; }
+    public DbSet<IcdEntity> Icd { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -39,6 +42,7 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<DoctorEntity>(options =>
         {
             options.ToTable("Doctor");
+            options.HasIndex(x => x.Email).IsUnique();
         });
         
         modelBuilder.Entity<InspectionEntity>(options =>
@@ -58,11 +62,26 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<SpecialityEntity>(options =>
         {
             options.ToTable("Speciality");
+            options.HasIndex(x => x.Name);
         });
 
         modelBuilder.Entity<PasswordEntity>(options =>
         {
             options.ToTable("Password");
+        });
+
+        modelBuilder.Entity<IcdRootsEntity>(options =>
+        {
+            options.HasIndex(x => x.NewId);
+            options.HasIndex(x => x.MKB_CODE);
+            options.HasIndex(x => x.MKB_NAME);
+        });
+        
+        modelBuilder.Entity<IcdEntity>(options =>
+        {
+            options.HasIndex(x => x.NewId);
+            options.HasIndex(x => x.MKB_CODE);
+            options.HasIndex(x => x.MKB_NAME);
         });
         
         base.OnModelCreating(modelBuilder);
