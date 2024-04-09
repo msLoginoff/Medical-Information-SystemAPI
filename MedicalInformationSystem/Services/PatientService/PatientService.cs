@@ -174,6 +174,13 @@ public class PatientService : IPatientService
             throw new NotFoundException($"Patient '{patientId}' not found");
         }
 
+        if (_context.Inspection.Any(x => x.Conclusion == ConclusionEnum.Death &&
+                                         x.Patient.Id == patientId))
+        {
+            throw new BadRequest(
+                $"This patient died");
+        }
+
         var newInspection = new InspectionEntity();
 
         if (inspectionCreateModel.PreviousInspectionId != null)
@@ -186,12 +193,7 @@ public class PatientService : IPatientService
                     $"Inspection date and time can't be earlier than date and time of previous inspection");
             }
 
-            if (_context.Inspection.Any(x => x.Conclusion == ConclusionEnum.Death && 
-                                             x.Patient.Id == patientId))
-            {
-                throw new BadRequest(
-                    $"This patient died");
-            }
+            
 
             var previousInspection = _context.Inspection
                 .Include(inspectionEntity => inspectionEntity.PreviousInspection)
@@ -236,7 +238,9 @@ public class PatientService : IPatientService
         newInspection.HasChain = false;
         newInspection.Patient = patient;
         newInspection.NextInspection = null;
-        newInspection.Doctor = _context.Doctor.First(x => x.Id == doctorId);
+        newInspection.Doctor = _context.Doctor
+            .Include(doctorEntity => doctorEntity.Speciality)
+            .First(x => x.Id == doctorId);
 
         foreach (var diagnosis in inspectionCreateModel.Diagnoses)
         {
@@ -264,8 +268,16 @@ public class PatientService : IPatientService
             
         if (consultations.FirstOrDefault() != null)
         {
+            
+            IEnumerable<Guid> used = new[] { newInspection.Doctor.Speciality.Id };
             foreach (var consultation in consultations)
             {
+                if (used.Contains(consultation.SpecialityId))
+                {
+                    throw new BadRequest("Inspection cannot have several consultations with the same specialty of a doctor");
+                }
+
+                used = used.Append(consultation.SpecialityId);
                 if (!_context.Speciality.Any(x => x.Id == consultation.SpecialityId))
                 {
                     throw new BadRequest("Speciality not found");
