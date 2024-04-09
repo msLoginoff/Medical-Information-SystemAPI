@@ -58,6 +58,28 @@ public class PatientController : ControllerBase
                 StatusCode = (int)HttpStatusCode.NotFound
             };
         }
+        catch (Forbidden e)
+        {
+            return new JsonResult(new Response
+            {
+                Status = "Error",
+                Message = e.Message
+            })
+            {
+                StatusCode = (int)HttpStatusCode.Forbidden
+            };
+        }
+        catch (ServerError e)
+        {
+            return new JsonResult(new Response
+            {
+                Status = "Error",
+                Message = e.Message
+            })
+            {
+                StatusCode = (int)HttpStatusCode.InternalServerError
+            };
+        }
     }
     
     [Authorize(Policy = "TokenPolicy")]
@@ -98,6 +120,28 @@ public class PatientController : ControllerBase
                 StatusCode = (int)HttpStatusCode.NotFound
             };
         }
+        catch (Forbidden e)
+        {
+            return new JsonResult(new Response
+            {
+                Status = "Error",
+                Message = e.Message
+            })
+            {
+                StatusCode = (int)HttpStatusCode.Forbidden
+            };
+        }
+        catch (ServerError e)
+        {
+            return new JsonResult(new Response
+            {
+                Status = "Error",
+                Message = e.Message
+            })
+            {
+                StatusCode = (int)HttpStatusCode.InternalServerError
+            };
+        }
     }
     
     [Authorize(Policy = "TokenPolicy")]
@@ -131,6 +175,28 @@ public class PatientController : ControllerBase
             })
             {
                 StatusCode = (int)HttpStatusCode.NotFound
+            };
+        }
+        catch (Forbidden e)
+        {
+            return new JsonResult(new Response
+            {
+                Status = "Error",
+                Message = e.Message
+            })
+            {
+                StatusCode = (int)HttpStatusCode.Forbidden
+            };
+        }
+        catch (ServerError e)
+        {
+            return new JsonResult(new Response
+            {
+                Status = "Error",
+                Message = e.Message
+            })
+            {
+                StatusCode = (int)HttpStatusCode.InternalServerError
             };
         }
     }
@@ -173,6 +239,28 @@ public class PatientController : ControllerBase
                 StatusCode = (int)HttpStatusCode.NotFound
             };
         }
+        catch (Forbidden e)
+        {
+            return new JsonResult(new Response
+            {
+                Status = "Error",
+                Message = e.Message
+            })
+            {
+                StatusCode = (int)HttpStatusCode.Forbidden
+            };
+        }
+        catch (ServerError e)
+        {
+            return new JsonResult(new Response
+            {
+                Status = "Error",
+                Message = e.Message
+            })
+            {
+                StatusCode = (int)HttpStatusCode.InternalServerError
+            };
+        }
     }
     
     [Authorize(Policy = "TokenPolicy")]
@@ -205,6 +293,28 @@ public class PatientController : ControllerBase
             })
             {
                 StatusCode = (int)HttpStatusCode.NotFound
+            };
+        }
+        catch (Forbidden e)
+        {
+            return new JsonResult(new Response
+            {
+                Status = "Error",
+                Message = e.Message
+            })
+            {
+                StatusCode = (int)HttpStatusCode.Forbidden
+            };
+        }
+        catch (ServerError e)
+        {
+            return new JsonResult(new Response
+            {
+                Status = "Error",
+                Message = e.Message
+            })
+            {
+                StatusCode = (int)HttpStatusCode.InternalServerError
             };
         }
     }
@@ -241,6 +351,28 @@ public class PatientController : ControllerBase
             })
             {
                 StatusCode = (int)HttpStatusCode.NotFound
+            };
+        }
+        catch (Forbidden e)
+        {
+            return new JsonResult(new Response
+            {
+                Status = "Error",
+                Message = e.Message
+            })
+            {
+                StatusCode = (int)HttpStatusCode.Forbidden
+            };
+        }
+        catch (ServerError e)
+        {
+            return new JsonResult(new Response
+            {
+                Status = "Error",
+                Message = e.Message
+            })
+            {
+                StatusCode = (int)HttpStatusCode.InternalServerError
             };
         }
     }

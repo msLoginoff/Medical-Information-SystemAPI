@@ -1,3 +1,5 @@
+using System.Net;
+using MedicalInformationSystem.Exceptions;
 using MedicalInformationSystem.Models;
 using MedicalInformationSystem.Services.Jwt;
 using Microsoft.AspNetCore.Authorization;
@@ -32,10 +34,49 @@ public class ConsultationController : ControllerBase
         {
             return Ok(); //todo connect consultationService
         }
-        catch (Exception e)
+        catch (BadRequest e)
         {
-            Console.WriteLine(e);
-            throw;
+            return new JsonResult(new Response
+            {
+                Status = "Error",
+                Message = e.Message
+            })
+            {
+                StatusCode = (int)HttpStatusCode.BadRequest
+            };
+        }
+        catch (NotFoundException e)
+        {
+            return new JsonResult(new Response
+            {
+                Status = "Error",
+                Message = e.Message
+            })
+            {
+                StatusCode = (int)HttpStatusCode.NotFound
+            };
+        }
+        catch (Forbidden e)
+        {
+            return new JsonResult(new Response
+            {
+                Status = "Error",
+                Message = e.Message
+            })
+            {
+                StatusCode = (int)HttpStatusCode.Forbidden
+            };
+        }
+        catch (ServerError e)
+        {
+            return new JsonResult(new Response
+            {
+                Status = "Error",
+                Message = e.Message
+            })
+            {
+                StatusCode = (int)HttpStatusCode.InternalServerError
+            };
         }
     }
     
@@ -48,10 +89,49 @@ public class ConsultationController : ControllerBase
         {
             return Ok(); //todo connect consultationService
         }
-        catch (Exception e)
+        catch (BadRequest e)
         {
-            Console.WriteLine(e);
-            throw;
+            return new JsonResult(new Response
+            {
+                Status = "Error",
+                Message = e.Message
+            })
+            {
+                StatusCode = (int)HttpStatusCode.BadRequest
+            };
+        }
+        catch (NotFoundException e)
+        {
+            return new JsonResult(new Response
+            {
+                Status = "Error",
+                Message = e.Message
+            })
+            {
+                StatusCode = (int)HttpStatusCode.NotFound
+            };
+        }
+        catch (Forbidden e)
+        {
+            return new JsonResult(new Response
+            {
+                Status = "Error",
+                Message = e.Message
+            })
+            {
+                StatusCode = (int)HttpStatusCode.Forbidden
+            };
+        }
+        catch (ServerError e)
+        {
+            return new JsonResult(new Response
+            {
+                Status = "Error",
+                Message = e.Message
+            })
+            {
+                StatusCode = (int)HttpStatusCode.InternalServerError
+            };
         }
     }
     
@@ -67,10 +147,49 @@ public class ConsultationController : ControllerBase
         {
             return Ok(); //todo connect consultationService
         }
-        catch (Exception e)
+        catch (BadRequest e)
         {
-            Console.WriteLine(e);
-            throw;
+            return new JsonResult(new Response
+            {
+                Status = "Error",
+                Message = e.Message
+            })
+            {
+                StatusCode = (int)HttpStatusCode.BadRequest
+            };
+        }
+        catch (NotFoundException e)
+        {
+            return new JsonResult(new Response
+            {
+                Status = "Error",
+                Message = e.Message
+            })
+            {
+                StatusCode = (int)HttpStatusCode.NotFound
+            };
+        }
+        catch (Forbidden e)
+        {
+            return new JsonResult(new Response
+            {
+                Status = "Error",
+                Message = e.Message
+            })
+            {
+                StatusCode = (int)HttpStatusCode.Forbidden
+            };
+        }
+        catch (ServerError e)
+        {
+            return new JsonResult(new Response
+            {
+                Status = "Error",
+                Message = e.Message
+            })
+            {
+                StatusCode = (int)HttpStatusCode.InternalServerError
+            };
         }
     }
     
@@ -86,10 +205,49 @@ public class ConsultationController : ControllerBase
         {
             return Ok(); //todo connect consultationService
         }
-        catch (Exception e)
+        catch (BadRequest e)
         {
-            Console.WriteLine(e);
-            throw;
+            return new JsonResult(new Response
+            {
+                Status = "Error",
+                Message = e.Message
+            })
+            {
+                StatusCode = (int)HttpStatusCode.BadRequest
+            };
+        }
+        catch (NotFoundException e)
+        {
+            return new JsonResult(new Response
+            {
+                Status = "Error",
+                Message = e.Message
+            })
+            {
+                StatusCode = (int)HttpStatusCode.NotFound
+            };
+        }
+        catch (Forbidden e)
+        {
+            return new JsonResult(new Response
+            {
+                Status = "Error",
+                Message = e.Message
+            })
+            {
+                StatusCode = (int)HttpStatusCode.Forbidden
+            };
+        }
+        catch (ServerError e)
+        {
+            return new JsonResult(new Response
+            {
+                Status = "Error",
+                Message = e.Message
+            })
+            {
+                StatusCode = (int)HttpStatusCode.InternalServerError
+            };
         }
     }
 }

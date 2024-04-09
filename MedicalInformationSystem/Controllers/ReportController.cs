@@ -27,27 +27,49 @@ public class ReportController : ControllerBase
             return _postService.GetPostsList(userId, tags, author, min, max, sorting, onlyMyCommunities, page, size);
         }
         catch (BadRequest e)
-        {
-            return new JsonResult(new Response
-            {
-                Status = "Error",
-                Message = e.Message
-            })
-            {
-                StatusCode = (int)HttpStatusCode.BadRequest
-            };
-        }
-        catch (NotAuthorize e)
-        {
-            return new JsonResult(new Response
-            {
-                Status = "Error",
-                Message = e.Message
-            })
-            {
-                StatusCode = (int)HttpStatusCode.Unauthorized
-            };
-        }*/
+           {
+               return new JsonResult(new Response
+               {
+                   Status = "Error",
+                   Message = e.Message
+               })
+               {
+                   StatusCode = (int)HttpStatusCode.BadRequest
+               };
+           }
+           catch (NotFoundException e)
+           {
+               return new JsonResult(new Response
+               {
+                   Status = "Error",
+                   Message = e.Message
+               })
+               {
+                   StatusCode = (int)HttpStatusCode.NotFound
+               };
+           }
+           catch (Forbidden e)
+           {
+               return new JsonResult(new Response
+               {
+                   Status = "Error",
+                   Message = e.Message
+               })
+               {
+                   StatusCode = (int)HttpStatusCode.Forbidden
+               };
+           }
+           catch (ServerError e)
+           {
+               return new JsonResult(new Response
+               {
+                   Status = "Error",
+                   Message = e.Message
+               })
+               {
+                   StatusCode = (int)HttpStatusCode.InternalServerError
+               };
+           }*/
         return new IcdRootsReportModel();
     }
 }

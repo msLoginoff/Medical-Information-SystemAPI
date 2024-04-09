@@ -58,6 +58,28 @@ public class DoctorController : ControllerBase
                 StatusCode = (int)HttpStatusCode.NotFound
             };
         }
+        catch (Forbidden e)
+        {
+            return new JsonResult(new Response
+            {
+                Status = "Error",
+                Message = e.Message
+            })
+            {
+                StatusCode = (int)HttpStatusCode.Forbidden
+            };
+        }
+        catch (ServerError e)
+        {
+            return new JsonResult(new Response
+            {
+                Status = "Error",
+                Message = e.Message
+            })
+            {
+                StatusCode = (int)HttpStatusCode.InternalServerError
+            };
+        }
     }
     
     [HttpPost("login")]
@@ -82,6 +104,39 @@ public class DoctorController : ControllerBase
                 StatusCode = (int)HttpStatusCode.BadRequest
             };
         }
+        catch (NotFoundException e)
+        {
+            return new JsonResult(new Response
+            {
+                Status = "Error",
+                Message = e.Message
+            })
+            {
+                StatusCode = (int)HttpStatusCode.NotFound
+            };
+        }
+        catch (Forbidden e)
+        {
+            return new JsonResult(new Response
+            {
+                Status = "Error",
+                Message = e.Message
+            })
+            {
+                StatusCode = (int)HttpStatusCode.Forbidden
+            };
+        }
+        catch (ServerError e)
+        {
+            return new JsonResult(new Response
+            {
+                Status = "Error",
+                Message = e.Message
+            })
+            {
+                StatusCode = (int)HttpStatusCode.InternalServerError
+            };
+        }
     }
     
     [Authorize(Policy = "TokenPolicy")]
@@ -99,13 +154,50 @@ public class DoctorController : ControllerBase
                 Message = "Logged out"
             });
         }
-        catch (Exception e)
+        catch (BadRequest e)
         {
-            Console.WriteLine(e);
-            throw;
+            return new JsonResult(new Response
+            {
+                Status = "Error",
+                Message = e.Message
+            })
+            {
+                StatusCode = (int)HttpStatusCode.BadRequest
+            };
         }
-        
-        throw new NotImplementedException();
+        catch (NotFoundException e)
+        {
+            return new JsonResult(new Response
+            {
+                Status = "Error",
+                Message = e.Message
+            })
+            {
+                StatusCode = (int)HttpStatusCode.NotFound
+            };
+        }
+        catch (Forbidden e)
+        {
+            return new JsonResult(new Response
+            {
+                Status = "Error",
+                Message = e.Message
+            })
+            {
+                StatusCode = (int)HttpStatusCode.Forbidden
+            };
+        }
+        catch (ServerError e)
+        {
+            return new JsonResult(new Response
+            {
+                Status = "Error",
+                Message = e.Message
+            })
+            {
+                StatusCode = (int)HttpStatusCode.InternalServerError
+            };
+        }
     }
     
     [Authorize(Policy = "TokenPolicy")]
@@ -119,6 +211,17 @@ public class DoctorController : ControllerBase
             
             return Ok(_doctorService.GetProfile(doctorId));
         }
+        catch (BadRequest e)
+        {
+            return new JsonResult(new Response
+            {
+                Status = "Error",
+                Message = e.Message
+            })
+            {
+                StatusCode = (int)HttpStatusCode.BadRequest
+            };
+        }
         catch (NotFoundException e)
         {
             return new JsonResult(new Response
@@ -130,10 +233,27 @@ public class DoctorController : ControllerBase
                 StatusCode = (int)HttpStatusCode.NotFound
             };
         }
-        catch (Exception e)
+        catch (Forbidden e)
         {
-            Console.WriteLine(e);
-            throw;
+            return new JsonResult(new Response
+            {
+                Status = "Error",
+                Message = e.Message
+            })
+            {
+                StatusCode = (int)HttpStatusCode.Forbidden
+            };
+        }
+        catch (ServerError e)
+        {
+            return new JsonResult(new Response
+            {
+                Status = "Error",
+                Message = e.Message
+            })
+            {
+                StatusCode = (int)HttpStatusCode.InternalServerError
+            };
         }
     }
     
@@ -148,17 +268,6 @@ public class DoctorController : ControllerBase
             _doctorService.EditProfile(userEditModel, doctorId);
             return Ok();
         }
-        catch (NotFoundException e)
-        {
-            return new JsonResult(new Response
-            {
-                Status = "Error",
-                Message = e.Message
-            })
-            {
-                StatusCode = (int)HttpStatusCode.NotFound
-            };
-        }
         catch (BadRequest e)
         {
             return new JsonResult(new Response
@@ -170,10 +279,38 @@ public class DoctorController : ControllerBase
                 StatusCode = (int)HttpStatusCode.BadRequest
             };
         }
-        catch (Exception e)
+        catch (NotFoundException e)
         {
-            Console.WriteLine(e);
-            throw;
+            return new JsonResult(new Response
+            {
+                Status = "Error",
+                Message = e.Message
+            })
+            {
+                StatusCode = (int)HttpStatusCode.NotFound
+            };
+        }
+        catch (Forbidden e)
+        {
+            return new JsonResult(new Response
+            {
+                Status = "Error",
+                Message = e.Message
+            })
+            {
+                StatusCode = (int)HttpStatusCode.Forbidden
+            };
+        }
+        catch (ServerError e)
+        {
+            return new JsonResult(new Response
+            {
+                Status = "Error",
+                Message = e.Message
+            })
+            {
+                StatusCode = (int)HttpStatusCode.InternalServerError
+            };
         }
     }
     
